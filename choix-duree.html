@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Choisir Durée</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <video id="background-video" autoplay loop muted poster="https://www.shutterstock.com/shutterstock/videos/3617496381/preview/stock-footage-animated-butterfly-isolated-on-black-background.webm">
+  <source src="https://www.shutterstock.com/shutterstock/videos/3617496381/preview/stock-footage-animated-butterfly-isolated-on-black-background.mp4" type="video/mp4">
+</video>
+  <header>
+    <h1>Choisissez la durée de votre relaxation</h1>
+  </header>
+  <main>
+    <div id="duration-buttons"></div><br><br>
+    <button id="next-step" disabled>Suivant</button>
+  </main>
+  <script>
+    let selectedDuration = null;
+    function createButtons() {
+      const container = document.getElementById('duration-buttons');
+      for (let i = 5; i <= 120; i += 5) {
+        const btn = document.createElement('button');
+        btn.textContent = `${i} minutes`;
+        btn.addEventListener('click', () => {
+          selectedDuration = i;
+          localStorage.setItem('selectedDuration', i);
+          document.querySelectorAll('#duration-buttons button').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          document.getElementById('next-step').disabled = false;
+        });
+        container.appendChild(btn);
+      }
+    }
+    document.getElementById('next-step').addEventListener('click', () => {
+      window.location.href = 'choix-son.html';
+    });
+    createButtons();
+  </script>
+</body>
+</html>

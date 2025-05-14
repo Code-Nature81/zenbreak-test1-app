@@ -1,0 +1,34 @@
+<!-- catalogue.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZenBreak - Relaxation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="catalogue-container">
+    <header>
+      <h1>Catalogue Relaxation</h1>
+      <p>Choisissez la durée de votre séance.</p>
+    </header>
+
+    <section class="catalogue-item">
+      <h2>Choisir la durée de relaxation</h2>
+      <div id="duration-buttons"></div>
+    </section>
+
+    <section id="countdown-section" class="hidden">
+      <h2>Relaxation en cours</h2>
+      <div id="countdown-display">00:00</div>
+    </section>
+
+    <footer>
+      <button onclick="window.location.href='index.html'">Retour à l'accueil</button>
+    </footer>
+  </div>
+
+  <script src="catalogue.js"></script>
+</body>
+</html>
