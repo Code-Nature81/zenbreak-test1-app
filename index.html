@@ -2,89 +2,43 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ZenBreak - Accueil</title>
-  <link rel="stylesheet" href="style.css" />
+
+  <!-- Lien vers le manifest PWA -->
   <link rel="manifest" href="manifest.json" />
+
+  <!-- Couleur de la barre d’état (Android) -->
+  <meta name="theme-color" content="#0288d1" />
+
+  <!-- Icônes pour les différents usages -->
+  <link rel="apple-touch-icon" sizes="180x180" href="logo.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="logo.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="logo.png" />
+
+  <!-- Ton fichier CSS -->
+  <link rel="stylesheet" href="style.css" />
 </head>
+
+
 <body>
-  
   <video id="background-video" autoplay loop muted poster="https://www.shutterstock.com/shutterstock/videos/3617496381/preview/stock-footage-animated-butterfly-isolated-on-black-background.webm">
   <source src="https://www.shutterstock.com/shutterstock/videos/3617496381/preview/stock-footage-animated-butterfly-isolated-on-black-background.mp4" type="video/mp4">
 </video>
-  <header>
-    <div class="logo-container">
-      <img src="logo.png" alt="ZenBreak Logo" class="logo" />
-    </div>
-    <h1>ZenBreak</h1>
-    <p>Votre moment de relaxation personnalisé</p>
-  </header>
-
-  <main>
-    <section class="intro">
-      <p>Choisissez le temps de relaxation et le son d'ambiance qui vous conviennent.</p>
-      <a href="choix-duree.html" class="button">Commencer</a>
-    </section>
-
-    <!--<section class="features">
-      <div class="feature">
-        <h2>Son Ambiant</h2>
-        <p>Choisissez votre son pour une immersion totale.</p>
-      </div>
-      <div class="feature">
-        <h2>Voix Apaisante</h2>
-        <p>Écoutez une voix guidée pour vous relaxer.</p>
-      </div>
-      <div class="feature">
-        <h2>Temps Personnalisé</h2>
-        <p>Fixez la durée de votre relaxation.</p>
-      </div>
-    </section>-->
-  </main>
-
-  <footer>
-    <p>&copy; 2025 ZenBreak | Tous droits réservés</p>
-  </footer>
-
-  <!-- Infobulle incitant à se mettre hors ligne -->
-  <div id="offline-message" class="offline-message">
-    <span class="close-btn" onclick="closeOfflineMessage()">×</span>
-    <p>Pour une vraie déconnexion, veuillez activer le mode hors ligne de votre appareil et profiter pleinement de votre moment de relaxation.</p>
-    <button onclick="goOffline()">Se mettre hors ligne</button>
-  </div>
-
-  <script>
-    // Vérifier si l'utilisateur est en ligne ou hors ligne
-    if (navigator.onLine) {
-      document.getElementById('offline-message').style.display = 'flex';
-    }
-
-    // Fonction pour inciter à se mettre hors ligne
-    function goOffline() {
-      alert('Pour une déconnexion complète, veuillez désactiver votre connexion Wi-Fi ou vos données mobiles.');
-    }
-
-    // Fonction pour fermer l'infobulle
-    function closeOfflineMessage() {
-      document.getElementById('offline-message').style.display = 'none';
-    }
-
-    // Service Worker pour le mode hors ligne
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker
-          .register('/service-worker.js')
-          .then((registration) => {
-            console.log('Service Worker enregistré avec succès:', registration);
-          })
-          .catch((error) => {
-            console.log('Échec de l\'enregistrement du Service Worker:', error);
-          });
-      });
-    }
-
+  <div class="container">
+    <img src="logo.png" alt="Logo ZenBreak" style="width:150px; margin-bottom: 20px;" />
+    <h1>Bienvenue sur ZenBreak</h1>
+    <p style="color: white;">🧘‍♂️ Une pause relaxante à portée de clic</p>
+    <a href="choix-duree.html"><button>Commencer une pause</button></a>
     
-
-  </script>
+  </div>
 </body>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(() => console.log("Service Worker enregistré"))
+      .catch(err => console.error("Échec SW :", err));
+  }
+</script>
+
 </html>

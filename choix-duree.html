@@ -3,42 +3,103 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Choisir Durée</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Choisir la durée</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e0f7fa;
+      color: #0277bd;
+      text-align: center;
+      padding: 2rem;
+    }
+    #background-video {
+   width: 100vw;
+   height: 100vh;
+   object-fit: cover;
+   position: fixed;
+   left: 0;
+   right: 0;
+   top: 0;
+   bottom: 0;
+   z-index: -1;
+}
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 4rem;
+      color: white;
+    }
+    select, button {
+      background: linear-gradient(to right, #0288d1, #26c6da);
+  color: white;
+  border: none;
+  padding: 14px 25px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+  margin: 10px;
+    }
+    select:hover, button:hover {
+      background-color: #424344;
+    }
+    
+  </style>
 </head>
 <body>
-
-  <video id="background-video" autoplay loop muted poster="https://www.shutterstock.com/shutterstock/videos/3617496381/preview/stock-footage-animated-butterfly-isolated-on-black-background.webm">
+<video id="background-video" autoplay loop muted poster="https://www.shutterstock.com/shutterstock/videos/3617496381/preview/stock-footage-animated-butterfly-isolated-on-black-background.webm">
   <source src="https://www.shutterstock.com/shutterstock/videos/3617496381/preview/stock-footage-animated-butterfly-isolated-on-black-background.mp4" type="video/mp4">
 </video>
-  <header>
-    <h1>Choisissez la durée de votre relaxation</h1>
-  </header>
-  <main>
-    <div id="duration-buttons"></div><br><br>
-    <button id="next-step" disabled>Suivant</button>
-  </main>
+  <h1>⏱ Choisissez la durée de votre pause</h1>
+
+  <select id="duree">
+    <option value="1">1 minutes</option>
+    <option value="2">2 minutes</option>
+    <option value="3">3 minutes</option>
+    <option value="4">4 minutes</option>
+    <option value="5">5 minutes</option>
+    <option value="6">6 minutes</option>
+    <option value="7">7 minutes</option>
+    <option value="8">8 minutes</option>
+    <option value="9">9 minutes</option>
+    <option value="10">10 minutes</option>
+    <option value="11">11 minutes</option>
+    <option value="12">12 minutes</option>
+    <option value="13">13 minutes</option>
+    <option value="14">14 minutes</option>
+    <option value="15">15 minutes</option>
+    <option value="16">16 minutes</option>
+    <option value="17">17 minutes</option>
+    <option value="18">18 minutes</option>
+    <option value="19">19 minutes</option>
+    <option value="20">20 minutes</option>
+    <option value="21">21 minutes</option>
+    <option value="22">22 minutes</option>
+    <option value="23">23 minutes</option>
+    <option value="24">24 minutes</option>
+    <option value="25">25 minutes</option>
+    <option value="26">26 minutes</option>
+    <option value="27">27 minutes</option>
+    <option value="28">28 minutes</option>
+    <option value="29">29 minutes</option>
+    <option value="30">30 minutes</option>
+  </select>
+
+  <br />
+  <button onclick="validerDuree()">✅ Valider</button>
+
   <script>
-    let selectedDuration = null;
-    function createButtons() {
-      const container = document.getElementById('duration-buttons');
-      for (let i = 5; i <= 120; i += 5) {
-        const btn = document.createElement('button');
-        btn.textContent = `${i} minutes`;
-        btn.addEventListener('click', () => {
-          selectedDuration = i;
-          localStorage.setItem('selectedDuration', i);
-          document.querySelectorAll('#duration-buttons button').forEach(b => b.classList.remove('selected'));
-          btn.classList.add('selected');
-          document.getElementById('next-step').disabled = false;
-        });
-        container.appendChild(btn);
+    function validerDuree() {
+      const duree = parseInt(document.getElementById("duree").value);
+      if (!isNaN(duree)) {
+        sessionStorage.setItem("dureeChoisie", duree * 60); // Stocké en secondes
+        window.location.href = "choix-son.html";
+      } else {
+        alert("Veuillez sélectionner une durée.");
       }
     }
-    document.getElementById('next-step').addEventListener('click', () => {
-      window.location.href = 'choix-son.html';
-    });
-    createButtons();
   </script>
+
 </body>
 </html>

@@ -2,67 +2,138 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Choix du son</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <video id="background-video" autoplay loop muted poster="https://www.shutterstock.com/shutterstock/videos/3617496381/preview/stock-footage-animated-butterfly-isolated-on-black-background.webm">
-  <source src="https://www.shutterstock.com/shutterstock/videos/3617496381/preview/stock-footage-animated-butterfly-isolated-on-black-background.mp4" type="video/mp4">
-</video>
-  <header>
-    <h1>Sélectionnez un son ou une voix</h1>
-  </header>
-  <main>
-    <select id="audio-choice">
-      <option value="">-- Choisir un son --</option>
-      <option value="sounds/ANMLInsc_Cigales (ID 3002)_LS.mp3">Cigales</option>
-      <option value="sounds/AMBBird_Oiseaux du soir (ID 1859)_LS.mp3">Oiseaux du soir</option>
-      <option value="sounds/AMBUndr_Grotte 2 (ID 2136)_LS.mp3">Grotte</option>
-      <option value="voices/female1.mp3">Voix féminine 1</option>
-      <option value="voices/male1.mp3">Voix masculine 1</option>
-    </select>
-    <button onclick="startZenBreak()">ZenBreak</button>
-    <div id="countdown-display" style="font-size: 2em; margin-top: 20px;"></div>
-
-  </main>
-  <script>
-    
-
-    function startZenBreak() {
-      const audioChoice = document.getElementById('audio-choice').value;
-      if (!audioChoice) {
-        alert("Veuillez choisir un son ou une voix pour commencer.");
-        return;
-      }
-
-      const audio = new Audio(audioChoice);
-      audio.play().catch(err => {
-        console.log("Lecture bloquée par le navigateur :", err);
-        alert("Veuillez cliquer de nouveau sur le bouton pour lancer la lecture.");
-      });
-
-      let duration = parseInt(localStorage.getItem('selectedDuration') || '5') * 60;
-      const display = document.getElementById('countdown-display');
-      display.style.display = 'block';
-      const timer = setInterval(() => {
-        const minutes = Math.floor(duration / 60);
-        const seconds = duration % 60;
-        display.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-        if (duration <= 0) {
-          clearInterval(timer);
-          const endAudio = new Audio('music/zen_music.mp3');
-          endAudio.play();
-          display.textContent = "Fin de la séance zen ✨";
-        }
-
-        duration--;
-      }, 1000);
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ZenBreak - Choix du son</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #e0f7fa;
+      color: #0277bd;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      min-height: 100vh;
     }
 
-   
+    #background-video {
+   width: 100vw;
+   height: 100vh;
+   object-fit: cover;
+   position: fixed;
+   left: 0;
+   right: 0;
+   top: 0;
+   bottom: 0;
+   z-index: -1;
+}
+h1{
+  color: white;
+  text-align: center;
+}
+     select, button {
+      background: linear-gradient(to right, #0288d1, #26c6da);
+  color: white;
+  border: none;
+  padding: 14px 25px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+  margin: 10px;
+    }
+    select:hover, button:hover {
+      background-color: #424344;
+    }
+    #timer {
+      font-size: 2rem;
+      margin-top: 1rem;
+      color: #01579b;
+    }
+    
+  </style>
+</head>
+<body>
+<video id="background-video" autoplay loop muted poster="https://www.shutterstock.com/shutterstock/videos/3617496381/preview/stock-footage-animated-butterfly-isolated-on-black-background.webm">
+  <source src="https://www.shutterstock.com/shutterstock/videos/3617496381/preview/stock-footage-animated-butterfly-isolated-on-black-background.mp4" type="video/mp4">
+</video>
+  <h1>Choisissez votre ambiance sonore</h1>
 
+  <label for="ambientSounds">Sons d’ambiance :</label>
+  <select id="ambientSounds">
+    <option value="sounds/AMBBird_Oiseaux du soir (ID 1859)_LS.mp3" >Oiseaux du soir</option>
+    <option value="sounds/AMBUndr_Grotte 2 (ID 2136)_LS.mp3">Grotte</option>
+    <option value="sounds/ANMLInsc_Cigales (ID 3002)_LS.mp3">Cigales</option>
+    
+  </select>
+
+  <button id="startBtn">Commencer</button>
+  <button id="stopBtn">Arrêt son</button>
+
+  <div id="timer"></div>
+
+  <script>
+    let duration = parseInt(sessionStorage.getItem('dureeChoisie'));
+    if (!duration || isNaN(duration)) duration = 300;
+
+    let remaining = duration;
+    let timerInterval;
+    let audio = null;
+    const gong = new Audio('sounds/gong.mp3');
+
+    const timerDisplay = document.getElementById('timer');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const ambientSelect = document.getElementById('ambientSounds');
+
+    function formatTime(s) {
+      const min = Math.floor(s / 60);
+      const sec = s % 60;
+      return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+    }
+
+    function updateTimer() {
+      timerDisplay.textContent = formatTime(remaining);
+      if (remaining <= 0) {
+        clearInterval(timerInterval);
+        timerDisplay.textContent = "Temps écoulé !";
+        if (audio) {
+          audio.pause();
+          audio.currentTime = 0;
+        }
+        gong.play();
+        return;
+      }
+      remaining--;
+    }
+
+    startBtn.onclick = () => {
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+      audio = new Audio(ambientSelect.value);
+      audio.loop = true;
+      audio.play();
+
+      remaining = duration;
+      updateTimer();
+
+      clearInterval(timerInterval);
+      timerInterval = setInterval(updateTimer, 1000);
+    };
+
+    stopBtn.onclick = () => {
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+      clearInterval(timerInterval);
+      timerDisplay.textContent = "";
+    };
   </script>
+
 </body>
 </html>
